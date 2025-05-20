@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trang Chủ - Quản Lý Tài Khoản</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Quản lý tài khoản Thành Chính</h1>
+        <div class="navigation">
+            <a href="{{ url_for('them_tai_khoan_nguoi_dung') }}" class="button primary">Thêm Tài Khoản Người Dùng</a>
+            <a href="{{ url_for('danh_sach_nguoi_dung') }}" class="button secondary">Xem Danh Sách Người Dùng</a>
+            <a href="{{ url_for('them_tai_khoan_luu_tru') }}" class="button primary">Thêm Tài Khoản Lưu Trữ</a>
+        </div>
+    </div>
+</body>
+</html>

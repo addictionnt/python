@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danh Sách Người Dùng - Quản Lý Tài Khoản</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Danh Sách Người Dùng</h1>
+        <div class="navigation">
+            <a href="{{ url_for('trang_chu') }}" class="button secondary">Về Trang Chủ</a>
+            <a href="{{ url_for('them_tai_khoan_nguoi_dung') }}" class="button primary">Thêm Tài Khoản Người Dùng</a>
+        </div>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul class="flashes">
+            {% for category, message in messages %}
+                <li class="alert alert-{{ category }}">{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+        {% endwith %}
+        {% if danh_sach %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Mã Người Dùng</th>
+                    <th>Tên Đăng Nhập</th>
+                    <th>Họ và Tên</th>
+                    <th>Hành Động</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for ma, nguoi_dung in danh_sach.items() %}
+                <tr>
+                    <td>{{ ma }}</td>
+                    <td>{{ nguoi_dung.ten_dang_nhap }}</td>
+                    <td>{{ nguoi_dung.thong_tin.ho_ten }}</td>
+                    <td class="actions">
+                        <a href="{{ url_for('chi_tiet_tai_khoan', ma_nguoi_dung=ma) }}" class="button info small">Chi Tiết</a>
+                        <a href="{{ url_for('sua_tai_khoan_nguoi_dung', ma_nguoi_dung=ma) }}" class="button warning small">Sửa</a>
+                        <form method="POST" action="{{ url_for('xoa_tai_khoan_nguoi_dung', ma_nguoi_dung=ma) }}" style="display: inline;">
+                            <button type="submit" class="button danger small" onclick="return confirm('Bạn có chắc chắn muốn xóa tài khoản này?')">Xóa</button>
+                        </form>
+                        <a href="{{ url_for('danh_sach_tai_khoan_luu_tru', ma_nguoi_dung=ma) }}" class="button secondary small">Tài khoản lưu trữ</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p>Chưa có người dùng nào được thêm.</p>
+        {% endif %}
+    </div>
+</body>
+</html>

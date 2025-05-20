@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danh Sách Tài Khoản Lưu Trữ - Quản Lý Tài Khoản</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Danh Sách Tài Khoản Lưu Trữ cho Mã Người Dùng: {{ ma_nguoi_dung }}</h1>
+        <div class="navigation">
+            <a href="{{ url_for('trang_chu') }}" class="button">Về Trang Chủ</a>
+            <a href="{{ url_for('danh_sach_nguoi_dung') }}" class="button secondary">Xem Danh Sách Người Dùng</a>
+            <a href="{{ url_for('them_tai_khoan_luu_tru') }}" class="button primary">Thêm Tài Khoản Lưu Trữ</a>
+        </div>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul class="flashes">
+            {% for category, message in messages %}
+                <li class="alert alert-{{ category }}">{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+        {% endwith %}
+        {% if danh_sach_tai_khoan %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Mã Tài Khoản</th>
+                    <th>Tài Khoản</th>
+                    <th>Ghi Chú</th>
+                    <th>Hành Động</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for ma_tk, tk_info in danh_sach_tai_khoan.items() %}
+                <tr>
+                    <td>{{ ma_tk }}</td>
+                    <td>{{ tk_info.tai_khoan }}</td>
+                    <td>{{ tk_info.ghi_chu }}</td>
+                    <td class="actions">
+                        <a href="{{ url_for('sua_tai_khoan_luu_tru', ma_nguoi_dung=ma_nguoi_dung, ma_tai_khoan=ma_tk) }}" class="button warning small">Sửa</a>
+                        <form method="POST" action="{{ url_for('xoa_tai_khoan_luu_tru', ma_nguoi_dung=ma_nguoi_dung, ma_tai_khoan=ma_tk) }}" style="display: inline;">
+                            <button type="submit" class="button danger small" onclick="return confirm('Bạn có chắc chắn muốn xóa tài khoản lưu trữ này?')">Xóa</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p>Chưa có tài khoản lưu trữ nào cho người dùng này.</p>
+        {% endif %}
+    </div>
+</body>
+</html>

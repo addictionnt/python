@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chi Tiết Tài Khoản - Quản Lý Tài Khoản</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Chi Tiết Tài Khoản</h1>
+        <div class="navigation">
+            <a href="{{ url_for('trang_chu') }}" class="button primary">Về Trang Chủ</a>
+            <a href="{{ url_for('danh_sach_nguoi_dung') }}" class="button secondary">Xem Danh Sách Người Dùng</a>
+        </div>
+        <div class="detail-card">
+            <h2>Thông Tin Người Dùng</h2>
+            <p><strong>Mã Người Dùng:</strong> {{ ma_nguoi_dung }}</p>
+            <p><strong>Tên Đăng Nhập:</strong> {{ thong_tin_tai_khoan.ten_dang_nhap }}</p>
+            <p><strong>Họ và Tên:</strong> {{ thong_tin_tai_khoan.thong_tin.ho_ten }}</p>
+            {% if thong_tin_tai_khoan.thong_tin.ngay_sinh %}
+            <p><strong>Ngày Sinh:</strong> {{ thong_tin_tai_khoan.thong_tin.ngay_sinh }}</p>
+            {% endif %}
+            {% if thong_tin_tai_khoan.thong_tin.dia_chi %}
+            <p><strong>Địa Chỉ:</strong> {{ thong_tin_tai_khoan.thong_tin.dia_chi }}</p>
+            {% endif %}
+        </div>
+
+        {% if thong_tin_tai_khoan.tai_khoan_luu_tru %}
+        <div class="detail-card">
+            <h2>Tài Khoản Lưu Trữ</h2>
+            {% if thong_tin_tai_khoan.tai_khoan_luu_tru %}
+            <ul>
+                {% for ma_tk, tk_info in thong_tin_tai_khoan.tai_khoan_luu_tru.items() %}
+                <li>
+                    <strong>{{ ma_tk }}:</strong> {{ tk_info.tai_khoan }}
+                    {% if tk_info.ghi_chu %} ({{ tk_info.ghi_chu }}) {% endif %}
+                    <a href="{{ url_for('sua_tai_khoan_luu_tru', ma_nguoi_dung=ma_nguoi_dung, ma_tai_khoan=ma_tk) }}" class="button warning small">Sửa</a>
+                    <form method="POST" action="{{ url_for('xoa_tai_khoan_luu_tru', ma_nguoi_dung=ma_nguoi_dung, ma_tai_khoan=ma_tk) }}" style="display: inline;">
+                        <button type="submit" class="button danger small" onclick="return confirm('Bạn có chắc chắn muốn xóa tài khoản lưu trữ này?')">Xóa</button>
+                    </form>
+                </li>
+                {% endfor %}
+            </ul>
+            <div class="navigation" style="margin-top: 15px; text-align: left;">
+                <a href="{{ url_for('them_tai_khoan_luu_tru') }}" class="button primary">Thêm Tài Khoản Lưu Trữ</a>
+            </div>
+            {% else %}
+            <p>Chưa có tài khoản lưu trữ nào.</p>
+            <div class="navigation" style="margin-top: 15px; text-align: left;">
+                <a href="{{ url_for('them_tai_khoan_luu_tru') }}" class="button primary">Thêm Tài Khoản Lưu Trữ</a>
+            </div>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
